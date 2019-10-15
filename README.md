@@ -1,245 +1,45 @@
-# private [![Build Status](https://travis-ci.org/benjamn/private.png?branch=master)](https://travis-ci.org/benjamn/private) [![Greenkeeper badge](https://badges.greenkeeper.io/benjamn/private.svg)](https://greenkeeper.io/)
+# react-app
+# Tên App: Cơm sinh viên
+# Mô tả : App cơm sinh viên hỗ trợ sinh viên xem thực đơn món ăn , tin tức ẩm thực, của một quán ăn nào đó, từ đó sẽ liên hệ để đặt món 
+# Các thư viện cần cài đặt 
+# - React Navigation
+# - npm install axios --save
+# - npm install mockserver
 
-A general-purpose utility for associating truly private state with any JavaScript object.
+# Các bước chạy
+# mở project trong màn hình cmd gõ react-native run-android hoặc react-native run-ios --simulator="iPhone 6s"
+# mở Project trong phần mềm visual studio code vào màn hình TERMINAL gõ npm run mock-server để khởi động server ảo
+# MÔ TẢ :
+# Màn giao diện trang chủ
 
-Installation
----
 
-From NPM:
+<img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/71945796_1299671630213726_4516683296049987584_n.jpg?_nc_cat=101&_nc_oc=AQlxi4b_kxQX6rxag2EvT4l5iJKkMAL3tTeAkV3EOfFMsf4Qj-szfTQ4itheS9xfQGo&_nc_ht=scontent.fhan3-3.fna&oh=abb29f991f542649212422f925e1b76e&oe=5E2F3678">
 
-    npm install private
+# Màn hình phụ (Khi nhấn vào từng Item tại màn hình chính thì sẽ chuyển sang màn hình phụ)
+# Người dùng có thể nhấn vào gọi hoặc sms để thực hiện liên lạc ngay 
 
-From GitHub:
+<img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/72046325_1299671723547050_987917137496506368_n.jpg?_nc_cat=101&_nc_oc=AQkQor4HmAclxqFmgZjgzn30aq8SpFsEhGQubzWPpVTA-U2F1tooHb6wl9skfkoWdQ0&_nc_ht=scontent.fhan3-3.fna&oh=83692964c1b2f45702ac3d3ecc5bb8be&oe=5E3632BA">
 
-    cd path/to/node_modules
-    git clone git://github.com/benjamn/private.git
-    cd private
-    npm install .
+# Giỏ hàng (Chỉ có giao diện chưa làm được chức năng)
 
-Usage
----
-**Get or create a secret object associated with any (non-frozen) object:**
-```js
-var getSecret = require("private").makeAccessor();
-var obj = Object.create(null); // any kind of object works
-getSecret(obj).totallySafeProperty = "p455w0rd";
+<img src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/72944513_1299671656880390_4930454415212544000_n.jpg?_nc_cat=102&_nc_oc=AQnnAsqAsPxhwRmbMFYGq6oOOJzw7YpTGHIaTprcBA5iJeDIffe0fsLx_ubSXkd2lpw&_nc_ht=scontent.fhan3-1.fna&oh=9959061513a1f715339f2bd675a00ec9&oe=5E3BDD6A">
 
-console.log(Object.keys(obj)); // []
-console.log(Object.getOwnPropertyNames(obj)); // []
-console.log(getSecret(obj)); // { totallySafeProperty: "p455w0rd" }
-```
-Now, only code that has a reference to both `getSecret` and `obj` can possibly access `.totallySafeProperty`.
+# Màn hình Cẩm nang (Hiển thị những bài viết , tin tức về ẩm thực)
 
-*Importantly, no global references to the secret object are retained by the `private` package, so as soon as `obj` gets garbage collected, the secret will be reclaimed as well. In other words, you don't have to worry about memory leaks.*
 
-**Create a unique property name that cannot be enumerated or guessed:**
-```js
-var secretKey = require("private").makeUniqueKey();
-var obj = Object.create(null); // any kind of object works
+<img src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.0-9/71840410_1299671643547058_355341473534705664_n.jpg?_nc_cat=110&_nc_oc=AQnrDn9vMj0UIzIs8wxfY9B0_S4-tzfYNucvQMpwl8aCtBGp3CPhDCkeeKGuI_D6Ph4&_nc_ht=scontent.fhan3-1.fna&oh=3eeaef9e66e21958e4d49dfeaf8e93aa&oe=5E24A515">
 
-Object.defineProperty(obj, secretKey, {
-  value: { totallySafeProperty: "p455w0rd" },
-  enumerable: false // optional; non-enumerability is the default
-});
 
-Object.defineProperty(obj, "nonEnumerableProperty", {
-  value: "anyone can guess my name",
-  enumerable: false
-});
+# Màn hình chi tiết bài viết cẩm nang (Khi nhấn vào từng item trong tabs cẩm nang thì sẽ chuyển màn hình sang chi tiết bài viết)
 
-console.log(obj[secretKey].totallySafeProperty); // p455w0rd
-console.log(obj.nonEnumerableProperty); // "anyone can guess my name"
-console.log(Object.keys(obj)); // []
-console.log(Object.getOwnPropertyNames(obj)); // ["nonEnumerableProperty"]
+<img src="https://scontent.fhan3-2.fna.fbcdn.net/v/t1.0-9/72373553_1299671686880387_4963037128041693184_n.jpg?_nc_cat=111&_nc_oc=AQk7UGnhgSYn9ojDJutVqkuEQ_p3wfO9O1fvJgUkxKNx6E4FgWeg0xeIiZvQu08H3AY&_nc_ht=scontent.fhan3-2.fna&oh=7193bf59eb8019f051ce40b6216b04ed&oe=5E3B2CD9">
 
-for (var key in obj) {
-  console.log(key); // never called
-}
-```
-Because these keys are non-enumerable, you can't discover them using a `for`-`in` loop. Because `secretKey` is a long string of random characters, you would have a lot of trouble guessing it. And because the `private` module wraps `Object.getOwnPropertyNames` to exclude the keys it generates, you can't even use that interface to discover it.
+# Màn hình thông tin ứng dụng 
+<img src="https://scontent.fhan3-2.fna.fbcdn.net/v/t1.0-9/72874230_1299671710213718_2111515324120563712_n.jpg?_nc_cat=111&_nc_oc=AQn9MVsmV7Tn4tksYMGuRQ3qW7NY2QJKT1D4-_Zt-Yi25_DPuFd0SWl8ZcGEdllbLIA&_nc_ht=scontent.fhan3-2.fna&oh=18d2578a6c3963be74e7daa3a0720916&oe=5E2D97A3">
 
-Unless you have access to the value of the `secretKey` property name, there is no way to access the value associated with it. So your only responsibility as secret-keeper is to avoid handing out the value of `secretKey` to untrusted code.
 
-Think of this style as a home-grown version of the first style. Note, however, that it requires a full implementation of ES5's `Object.defineProperty` method in order to make any safety guarantees, whereas the first example will provide safety even in environments that do not support `Object.defineProperty`.
 
-Rationale
----
 
-In JavaScript, the only data that are truly private are local variables
-whose values do not *leak* from the scope in which they were defined.
 
-This notion of *closure privacy* is powerful, and it readily provides some
-of the benefits of traditional data privacy, a la Java or C++:
-```js
-function MyClass(secret) {
-    this.increment = function() {
-        return ++secret;
-    };
-}
 
-var mc = new MyClass(3);
-console.log(mc.increment()); // 4
-```
-You can learn something about `secret` by calling `.increment()`, and you
-can increase its value by one as many times as you like, but you can never
-decrease its value, because it is completely inaccessible except through
-the `.increment` method. And if the `.increment` method were not
-available, it would be as if no `secret` variable had ever been declared,
-as far as you could tell.
 
-This style breaks down as soon as you want to inherit methods from the
-prototype of a class:
-```js
-function MyClass(secret) {
-    this.secret = secret;
-}
-
-MyClass.prototype.increment = function() {
-    return ++this.secret;
-};
-```
-The only way to communicate between the `MyClass` constructor and the
-`.increment` method in this example is to manipulate shared properties of
-`this`. Unfortunately `this.secret` is now exposed to unlicensed
-modification:
-```js
-var mc = new MyClass(6);
-console.log(mc.increment()); // 7
-mc.secret -= Infinity;
-console.log(mc.increment()); // -Infinity
-mc.secret = "Go home JavaScript, you're drunk.";
-mc.increment(); // NaN
-```
-Another problem with closure privacy is that it only lends itself to
-per-instance privacy, whereas the `private` keyword in most
-object-oriented languages indicates that the data member in question is
-visible to all instances of the same class.
-
-Suppose you have a `Node` class with a notion of parents and children:
-```js
-function Node() {
-    var parent;
-    var children = [];
-
-    this.getParent = function() {
-        return parent;
-    };
-
-    this.appendChild = function(child) {
-        children.push(child);
-        child.parent = this; // Can this be made to work?
-    };
-}
-```
-The desire here is to allow other `Node` objects to manipulate the value
-returned by `.getParent()`, but otherwise disallow any modification of the
-`parent` variable. You could expose a `.setParent` function, but then
-anyone could call it, and you might as well give up on the getter/setter
-pattern.
-
-This module solves both of these problems.
-
-Usage
----
-
-Let's revisit the `Node` example from above:
-```js
-var p = require("private").makeAccessor();
-
-function Node() {
-    var privates = p(this);
-    var children = [];
-
-    this.getParent = function() {
-        return privates.parent;
-    };
-
-    this.appendChild = function(child) {
-        children.push(child);
-        var cp = p(child);
-        if (cp.parent)
-            cp.parent.removeChild(child);
-        cp.parent = this;
-        return child;
-    };
-}
-```
-Now, in order to access the private data of a `Node` object, you need to
-have access to the unique `p` function that is being used here.  This is
-already an improvement over the previous example, because it allows
-restricted access by other `Node` instances, but can it help with the
-`Node.prototype` problem too?
-
-Yes it can!
-```js
-var p = require("private").makeAccessor();
-
-function Node() {
-    p(this).children = [];
-}
-
-var Np = Node.prototype;
-
-Np.getParent = function() {
-    return p(this).parent;
-};
-
-Np.appendChild = function(child) {
-    p(this).children.push(child);
-    var cp = p(child);
-    if (cp.parent)
-        cp.parent.removeChild(child);
-    cp.parent = this;
-    return child;
-};
-```
-Because `p` is in scope not only within the `Node` constructor but also
-within `Node` methods, we can finally avoid redefining methods every time
-the `Node` constructor is called.
-
-Now, you might be wondering how you can restrict access to `p` so that no
-untrusted code is able to call it. The answer is to use your favorite
-module pattern, be it CommonJS, AMD `define`, or even the old
-Immediately-Invoked Function Expression:
-```js
-var Node = (function() {
-    var p = require("private").makeAccessor();
-
-    function Node() {
-        p(this).children = [];
-    }
-
-    var Np = Node.prototype;
-
-    Np.getParent = function() {
-        return p(this).parent;
-    };
-
-    Np.appendChild = function(child) {
-        p(this).children.push(child);
-        var cp = p(child);
-        if (cp.parent)
-            cp.parent.removeChild(child);
-        cp.parent = this;
-        return child;
-    };
-
-    return Node;
-}());
-
-var parent = new Node;
-var child = new Node;
-parent.appendChild(child);
-assert.strictEqual(child.getParent(), parent);
-```
-Because this version of `p` never leaks from the enclosing function scope,
-only `Node` objects have access to it.
-
-So, you see, the claim I made at the beginning of this README remains
-true:
-
-> In JavaScript, the only data that are truly private are local variables
-> whose values do not *leak* from the scope in which they were defined.
-
-It just so happens that closure privacy is sufficient to implement a
-privacy model similar to that provided by other languages.
